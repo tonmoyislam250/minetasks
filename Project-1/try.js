@@ -1,17 +1,17 @@
 const axios = require("axios");
 
-// // Create data
-// for (let i = 2; i <= 5; i++) {
-//   const newData = {
-//     id: null,
-//     name: `Data ${i}`,
-//     university: `University ${i}`,
-//     district: `District ${i + 1}`,
-//   };
-//   axios.post("http://localhost:1234/dataforme", newData).then((response) => {
-//     console.log("Data created:", response.data);
-//   });
-// }
+// Create data
+for (let i = 2; i <= 5; i++) {
+  const newData = {
+    id: null,
+    name: `Data ${i}`,
+    university: `University ${i}`,
+    district: `District ${i + 1}`,
+  };
+  axios.post("http://localhost:1234/dataforme", newData).then((response) => {
+    console.log("Data created:", response.data);
+  });
+}
 
 // Update data
 const newData2 = {
