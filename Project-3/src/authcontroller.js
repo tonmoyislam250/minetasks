@@ -4,8 +4,9 @@ const Joi = require("joi");
 
 const schemavalid = Joi.object({
   name: Joi.string().required(),
-  university: Joi.string().required(),
+  phone: Joi.string().required(),
   district: Joi.string().required(),
+  password: Joi.string().required().min(6),
 });
 
 module.exports = {
