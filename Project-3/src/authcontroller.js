@@ -1,9 +1,20 @@
 const bcrypt = require("bcrypt");
 const userModel = require("./usermodel");
+const Joi = require("joi");
+
+const schemavalid = Joi.object({
+  name: Joi.string().required(),
+  university: Joi.string().required(),
+  district: Joi.string().required(),
+});
 
 module.exports = {
   signup: async (req, res) => {
     try {
+      const { error } = schemavalid.validate(req.body);
+      if (error) {
+        return res.status(400).json({ message: error.details[0].message });
+      }
       const { name, phone, district, password } = req.body;
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = await userModel.createUser({
@@ -22,8 +33,11 @@ module.exports = {
 
   login: async (req, res) => {
     try {
+      const { error } = schemavalid.validate(req.body);
+      if (error) {
+        return res.status(400).json({ message: error.details[0].message });
+      }
       const { phone, password } = req.body;
-
       const user = await userModel.getUserByPhone(phone);
 
       if (!user) {
@@ -45,8 +59,8 @@ module.exports = {
           district: user.district,
         }),
         {
-          httpOnly: true, // Set to true for security
-          maxAge: 24 * 60 * 60 * 1000, // Cookie expiration time (in milliseconds)
+          httpOnly: true,
+          maxAge: 24 * 60 * 60 * 1000,
         }
       );
 
@@ -58,8 +72,6 @@ module.exports = {
 
   logout: async (req, res) => {
     try {
-      // Perform logout actions - destroy session, clear cookies, etc.
-
       res.clearCookie("user_cookie");
       res.status(200).json({ message: "Logout successful" });
     } catch (error) {
